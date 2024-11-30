@@ -1,0 +1,553 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% load humanize %}
+{% load base_core %}
+
+
+{% block title %}
+{% endblock title %}
+
+{% block head %}
+
+<script src="{% static 'jquery-3.7.1.min.js' %}" ></script>
+
+
+
+<script src=" https://cdn.jsdelivr.net/npm/jquery-toast-plugin@1.3.2/dist/jquery.toast.min.js "></script>
+<link href=" https://cdn.jsdelivr.net/npm/jquery-toast-plugin@1.3.2/dist/jquery.toast.min.css " rel="stylesheet">
+
+
+
+
+<link rel="stylesheet" href="{% static 'css/jquery.toast.css' %}">
+{% endblock head %}
+
+
+
+{% block content %}
+
+
+
+<div class="homepage-slider">
+    <!-- single home slider -->
+    <div class="single-homepage-slider homepage-bg-1">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 col-lg-7 offset-lg-1 offset-xl-0">
+                    <div class="hero-text">
+                        <div class="hero-text-tablecell">
+                            <p class="subtitle">Fresh & Organic</p>
+                            <h1>Delicious Seasonal Fruits</h1>
+                            <div class="hero-btns">
+                                <a href="shop.html" class="boxed-btn">Fruit Collection</a>
+                                <a href="contact.html" class="bordered-btn">Contact Us</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- single home slider -->
+    <div class="single-homepage-slider homepage-bg-2">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 offset-lg-1 text-center">
+                    <div class="hero-text">
+                        <div class="hero-text-tablecell">
+                            <p class="subtitle">Fresh Everyday</p>
+                            <h1>100% Organic Collection</h1>
+                            <div class="hero-btns">
+                                <a href="shop.html" class="boxed-btn">Visit Shop</a>
+                                <a href="contact.html" class="bordered-btn">Contact Us</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- single home slider -->
+    <div class="single-homepage-slider homepage-bg-3">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 offset-lg-1 text-right">
+                    <div class="hero-text">
+                        <div class="hero-text-tablecell">
+                            <p class="subtitle">Mega Sale Going On!</p>
+                            <h1>Get December Discount</h1>
+                            <div class="hero-btns">
+                                <a href="shop.html" class="boxed-btn">Visit Shop</a>
+                                <a href="contact.html" class="bordered-btn">Contact Us</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="list-section pt-80 pb-80">
+    <div class="container">
+
+        <div class="row">
+            <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
+                <div class="list-box d-flex align-items-center">
+                    <div class="list-icon">
+                        <i class="fas fa-shipping-fast"></i>
+                    </div>
+                    <div class="content">
+                        <h3>ارسال رایگان</h3>
+                        <p>کمتر از 1 ساعت درون شهری(شیراز)</p>
+                        <p>ارسال رایگان به هرجای کشور</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
+                <div class="list-box d-flex align-items-center">
+                    <div class="list-icon">
+                        <i class="fas fa-phone-volume"></i>
+                    </div>
+                    <div class="content">
+                        <h3>پشتیبانی 24 ساعته</h3>
+                        <p>با تماس و در شبکه های اجتماعی</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="list-box d-flex justify-content-start align-items-center">
+                    <div class="list-icon">
+                        <i class="fas fa-sync"></i>
+                    </div>
+                    <div class="content">
+                        <h3>ضمانت بازگشت</h3>
+                        <p>تا 3 روز تحت هرشرایطی</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="product-section mt-150 mb-150">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2 text-center">
+                <div class="section-title">	
+                    <h3><span class="orange-text"   > محصولات </span>ما</h3>
+                    <p>
+                        تمامی محصولات ما از باغات بوانات می باشد با بهترین کیفیت 
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            {% for i in products %}
+
+                <div class="col-lg-4 col-md-6 text-center">
+                    <div class="single-product-item">
+                        <div class="product-image">
+                            <a href="{% url 'detail' i.id %}">
+                                {% if i.image %}
+                                    <img src="{{i.image.url}}" alt="">
+                                {% endif %}
+                            </a>
+                        </div>
+                        <h3>{{i.title}}</h3>
+                        <p class="product-price"><span>قیمت هر کیلو(تومان)</span> {{i.price|floatformat:"u"|intcomma:False}}  </p>
+                        {% if request.user.is_authenticated %}
+                            {% test_in_cart i.id as in_cart %}
+                            {% if in_cart %}
+                                <a  class="cart-btn" style="background-color: green;" href="{% url 'mycart' %}">
+                                    <i class="fas fa-shopping-cart"></i>تسویه حساب</a>
+                            {% else %}
+
+                                <a id="{{i.id}}"  class="cart-btn addCart"><i class="fas fa-shopping-cart"></i>اضافه کردن به سبدخرید</a>
+
+
+                            {% endif %}
+
+                        {% else %}
+                            <a  id="{{i.id}}"  class="cart-btn addCart"><i class="fas fa-shopping-cart"></i>اضافه کردن به سبدخرید</a>
+
+                        {% endif %}
+                    </div>
+                </div>
+
+            {% endfor %}
+
+
+            <script type="text/javascript" >
+
+                $(document).ready(function(){
+
+                    $(".addCart").click(function(e){
+
+                        let product_id=$(this).attr('id');
+                        let url=`/cart/add/${product_id}/`;
+
+
+                        function getCookie(name) {
+
+                            let cookieValue = null;
+                            if (document.cookie && document.cookie !== '') {
+                                const cookies = document.cookie.split(';');
+                                for (let i = 0; i < cookies.length; i++) {
+                                    const cookie = cookies[i].trim();
+                                    // Does this cookie string begin with the name we want?
+                                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                        break;
+                                    }
+                                }
+                            }
+                            return cookieValue;
+
+                        }
+
+                        const csrftoken = getCookie('csrftoken');
+
+
+
+                        try{
+
+        
+                                $.ajax({
+        
+                                    method:"POST",
+                                    url,
+                                    data:{
+                                        'csrfmiddlewaretoken':csrftoken
+                                    },
+        
+                                    success:function(e){
+                                        console.log(e)
+        
+                                        if(e.error){
+        
+                                            if(e.loggin_required){
+        
+                                                $.toast({ 
+                                                            text : "<p style='font-size:18px' class='text-center'>لطفا ابتدا وارد شوید</p>", 
+                                                            showHideTransition : 'slide',  // It can be plain, fade or slide
+                                                            bgColor : '#ff3647',              // Background color for toast
+                                                            textColor : '#000',            // text color
+                                                            allowToastClose : false,       // Show the close button or not
+                                                            hideAfter : 5000,              // `false` to make it sticky or time in miliseconds to hide after
+                                                            stack : 5,                     // `fakse` to show one stack at a time count showing the number of toasts that can be shown at once
+                                                            textAlign : 'right',            // Alignment of text i.e. left, right, center
+                                                            position : 'bottom-center'       // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values to position the toast on page
+                                                });
+        
+                                                function re(){
+                                                    window.location.href="/account/"
+                                                }
+        
+                                                const redirect_handle=setTimeout(re,3000)
+        
+                                            }   
+        
+        
+                                            if(e.many){
+        
+                                                $.toast({ 
+                                                        text : "<p style='font-size:18px' class='text-center'>دسترسی شما برای مدت محدود شده است لطفا بعدا امتحان کنید</p>", 
+                                                        showHideTransition : 'slide',  // It can be plain, fade or slide
+                                                        bgColor : '#ff3647',              // Background color for toast
+                                                        textColor : '#000',            // text color
+                                                        allowToastClose : false,       // Show the close button or not
+                                                        hideAfter : 5000,              // `false` to make it sticky or time in miliseconds to hide after
+                                                        stack : 5,                     // `fakse` to show one stack at a time count showing the number of toasts that can be shown at once
+                                                        textAlign : 'right',            // Alignment of text i.e. left, right, center
+                                                        position : 'bottom-center'       // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values to position the toast on page
+                                                });
+                                                    
+            
+            
+                                                function reddirect_func(){
+                                                    window.location.href="/"
+                                                }
+        
+                                                const re=setTimeout(reddirect_func,5000)
+        
+                                            }
+        
+                                            
+                                            if(e.product){
+        
+                                                $.toast({ 
+                                                        text : "<p style='font-size:18px' class='text-center'>محصول وجود ندارد</p>", 
+                                                        showHideTransition : 'slide',  // It can be plain, fade or slide
+                                                        bgColor : '#ff3647',              // Background color for toast
+                                                        textColor : '#000',            // text color
+                                                        allowToastClose : false,       // Show the close button or not
+                                                        hideAfter : 5000,              // `false` to make it sticky or time in miliseconds to hide after
+                                                        stack : 5,                     // `fakse` to show one stack at a time count showing the number of toasts that can be shown at once
+                                                        textAlign : 'right',            // Alignment of text i.e. left, right, center
+                                                        position : 'bottom-center'       // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values to position the toast on page
+                                                });
+        
+                                            }
+        
+        
+                                        }
+        
+        
+                                        if(e.added){
+        
+                                            function reddirect_func(){
+                                                    window.location.href="/cart/mycart/"
+                                                }
+        
+                                            const re=setTimeout(reddirect_func,300)
+        
+                                        }
+        
+        
+        
+                                    },
+        
+                                    error:function(e){
+                                        console.log("EEE",e)
+                                    }
+        
+        
+                                })
+
+                                
+                        }
+
+                        
+                        catch (e){
+
+                            $.toast({ 
+                                    text : "<p style='font-size:18px' class='text-center'>مشکلی وجوددارد دوباره امتحان کنید</p>", 
+                                    showHideTransition : 'slide',  // It can be plain, fade or slide
+                                    bgColor : '#ff3647',              // Background color for toast
+                                    textColor : '#000',            // text color
+                                    allowToastClose : false,       // Show the close button or not
+                                    hideAfter : 5000,              // `false` to make it sticky or time in miliseconds to hide after
+                                    stack : 5,                     // `fakse` to show one stack at a time count showing the number of toasts that can be shown at once
+                                    textAlign : 'right',            // Alignment of text i.e. left, right, center
+                                    position : 'bottom-center'       // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values to position the toast on page
+                            });
+
+                        }
+
+
+                    })
+                   
+
+                })
+
+
+           </script>
+
+
+        </div>
+    </div>
+</div>
+
+<!-- <section class="cart-banner pt-100 pb-100">
+    <div class="container">
+        <div class="row clearfix">
+         
+            <div class="image-column col-lg-6">
+                <div class="image">
+                    <div class="price-box">
+                        <div class="inner-price">
+                            <span class="price">
+                                <strong>30%</strong> <br> off per kg
+                            </span>
+                        </div>
+                    </div>
+                    <img src="assets/img/a.jpg" alt="">
+                </div>
+            </div>
+            
+            <div class="content-column col-lg-6">
+                <h3><span class="orange-text">Deal</span> of the month</h3>
+                <h4>Hikan Strwaberry</h4>
+                <div class="text">Quisquam minus maiores repudiandae nobis, minima saepe id, fugit ullam similique! Beatae, minima quisquam molestias facere ea. Perspiciatis unde omnis iste natus error sit voluptatem accusant</div>
+               
+                <div class="time-counter"><div class="time-countdown clearfix" data-countdown="2020/2/01"><div class="counter-column"><div class="inner"><span class="count">00</span>Days</div></div> <div class="counter-column"><div class="inner"><span class="count">00</span>Hours</div></div>  <div class="counter-column"><div class="inner"><span class="count">00</span>Mins</div></div>  <div class="counter-column"><div class="inner"><span class="count">00</span>Secs</div></div></div></div>
+                <a href="cart.html" class="cart-btn mt-3"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+            </div>
+        </div>
+    </div>
+</section> -->
+
+
+<div class="testimonail-section mt-150 mb-150">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-10 offset-lg-1 text-center">
+                <div class="section-title">	
+                    <h3><span class="orange-text"   > نظرات برخی از مشتری های عزیز ما</span></h3>
+                </div>
+
+                <div class="testimonial-sliders">
+                    {% for i in comments %}
+                        <div class="single-testimonial-slider">
+                            <div class="client-avater">
+                                <img src="assets/img/avaters/avatar1.png" alt="">
+                            </div>
+                            <div class="client-meta">
+                                <h3>{{i.name}} <span>{{i.city}}</span></h3>
+                                <p class="testimonial-body">
+                                  {{i.text}}
+                                </p>
+                                <div class="last-icon">
+                                    <i class="fas fa-quote-right"></i>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+
+       
+
+
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="abt-section mb-150">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-md-12">
+                <div class="abt-bg">
+                    <a href="https://www.youtube.com/watch?v=DBLlFWYcIGQ" class="video-play-btn popup-youtube"><i class="fas fa-play"></i></a>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-12">
+                <div class="abt-text">
+                    <!-- <p class="top-sub">Since Year 1999</p> -->
+                    <h2> ما خشکبار <span class="orange-text">مهرسام هستیم</span></h2>
+                    <p>Etiam vulputate ut augue vel sodales. In sollicitudin neque et massa porttitor vestibulum ac vel nisi. Vestibulum placerat eget dolor sit amet posuere. In ut dolor aliquet, aliquet sapien sed, interdum velit. Nam eu molestie lorem.</p>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente facilis illo repellat veritatis minus, et labore minima mollitia qui ducimus.</p>
+                    <a href="about.html" class="boxed-btn mt-4">بیشتر درباره ما</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- <section class="shop-banner">
+    <div class="container">
+        <h3>December sale is on! <br> with big <span class="orange-text">Discount...</span></h3>
+        <div class="sale-percent"><span>Sale! <br> Upto</span>50% <span>off</span></div>
+        <a href="shop.html" class="cart-btn btn-lg">Shop Now</a>
+    </div>
+</section> -->
+
+
+<!-- 
+<div class="latest-news pt-150 pb-150">
+    <div class="container">
+
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2 text-center">
+                <div class="section-title">	
+                    <h3><span class="orange-text">Our</span> News</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, fuga quas itaque eveniet beatae optio.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-4 col-md-6">
+                <div class="single-latest-news">
+                    <a href="single-news.html"><div class="latest-news-bg news-bg-1"></div></a>
+                    <div class="news-text-box">
+                        <h3><a href="single-news.html">You will vainly look for fruit on it in autumn.</a></h3>
+                        <p class="blog-meta">
+                            <span class="author"><i class="fas fa-user"></i> Admin</span>
+                            <span class="date"><i class="fas fa-calendar"></i> 27 December, 2019</span>
+                        </p>
+                        <p class="excerpt">Vivamus lacus enim, pulvinar vel nulla sed, scelerisque rhoncus nisi. Praesent vitae mattis nunc, egestas viverra eros.</p>
+                        <a href="single-news.html" class="read-more-btn">read more <i class="fas fa-angle-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="single-latest-news">
+                    <a href="single-news.html"><div class="latest-news-bg news-bg-2"></div></a>
+                    <div class="news-text-box">
+                        <h3><a href="single-news.html">A man's worth has its season, like tomato.</a></h3>
+                        <p class="blog-meta">
+                            <span class="author"><i class="fas fa-user"></i> Admin</span>
+                            <span class="date"><i class="fas fa-calendar"></i> 27 December, 2019</span>
+                        </p>
+                        <p class="excerpt">Vivamus lacus enim, pulvinar vel nulla sed, scelerisque rhoncus nisi. Praesent vitae mattis nunc, egestas viverra eros.</p>
+                        <a href="single-news.html" class="read-more-btn">read more <i class="fas fa-angle-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 offset-md-3 offset-lg-0">
+                <div class="single-latest-news">
+                    <a href="single-news.html"><div class="latest-news-bg news-bg-3"></div></a>
+                    <div class="news-text-box">
+                        <h3><a href="single-news.html">Good thoughts bear good fresh juicy fruit.</a></h3>
+                        <p class="blog-meta">
+                            <span class="author"><i class="fas fa-user"></i> Admin</span>
+                            <span class="date"><i class="fas fa-calendar"></i> 27 December, 2019</span>
+                        </p>
+                        <p class="excerpt">Vivamus lacus enim, pulvinar vel nulla sed, scelerisque rhoncus nisi. Praesent vitae mattis nunc, egestas viverra eros.</p>
+                        <a href="single-news.html" class="read-more-btn">read more <i class="fas fa-angle-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <a href="news.html" class="boxed-btn">More News</a>
+            </div>
+        </div>
+    </div>
+</div> -->
+
+
+<!-- <div class="logo-carousel-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="logo-carousel-inner">
+                    <div class="single-logo-item">
+                        <img src="assets/img/company-logos/1.png" alt="">
+                    </div>
+                    <div class="single-logo-item">
+                        <img src="assets/img/company-logos/2.png" alt="">
+                    </div>
+                    <div class="single-logo-item">
+                        <img src="assets/img/company-logos/3.png" alt="">
+                    </div>
+                    <div class="single-logo-item">
+                        <img src="assets/img/company-logos/4.png" alt="">
+                    </div>
+                    <div class="single-logo-item">
+                        <img src="assets/img/company-logos/5.png" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->
+
+{% endblock content %}
+
+
+
+{% block script %}
+
+<script src="{% static 'js/jquery.toast.js' %}" ></script>
+{% endblock script %}

@@ -1,0 +1,497 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% load humanize %}
+{% load base_core %}
+
+
+{% block title %}
+{% endblock title %}
+
+{% block head %}
+
+<script src="{% static 'jquery-3.7.1.min.js' %}" ></script>
+
+
+
+<script src=" https://cdn.jsdelivr.net/npm/jquery-toast-plugin@1.3.2/dist/jquery.toast.min.js "></script>
+<link href=" https://cdn.jsdelivr.net/npm/jquery-toast-plugin@1.3.2/dist/jquery.toast.min.css " rel="stylesheet">
+
+
+
+
+<link rel="stylesheet" href="{% static 'css/jquery.toast.css' %}">
+{% endblock head %}
+
+
+
+{% block content %}
+
+	
+	<!-- <div class="breadcrumb-section breadcrumb-bg">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8 offset-lg-2 text-center">
+					<div class="breadcrumb-text">
+						<p>See more Details</p>
+						<h1>Single Product</h1>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div> -->
+
+	<div class="single-product mt-150 mb-150">
+		<div class="container">
+			<div class="row">
+
+				
+				<div class="col-md-7">
+					<div class="single-product-content">
+						<h3>{{p.name}}</h3>
+						<p class="single-product-pricing"><span>هرکیلو</span>  {{p.price|floatformat:"u"|intcomma:False}} تومان </p>
+						<p>
+                        {{p.description}}
+                        </p>
+						<div class="single-product-form text-right">
+							<!-- <form action="index.html">
+								<input type="number" placeholder="0">
+							</form> -->
+							<a  class="cart-btn addCart" id="{{p.id}}"><i class="fas fa-shopping-cart"></i>اضافه کردن به سبدخرید</a>
+							<!-- <p><strong>Categories: </strong>Fruits, Organic</p> -->
+						</div>
+						<!-- <h4>Share:</h4>
+						<ul class="product-share">
+							<li><a href=""><i class="fab fa-facebook-f"></i></a></li>
+							<li><a href=""><i class="fab fa-twitter"></i></a></li>
+							<li><a href=""><i class="fab fa-google-plus-g"></i></a></li>
+							<li><a href=""><i class="fab fa-linkedin"></i></a></li>
+						</ul> -->
+					</div>
+				</div>
+
+                <div class="col-md-5">
+					<div class="single-product-img">
+						<img src="{% if p.image %}{{p.image.url}}{% endif %}" alt="">
+					</div>
+				</div>
+
+
+			</div>
+		</div>
+	</div>
+
+    <script type="text/javascript" >
+
+        $(document).ready(function(){
+
+            $(".addCart").click(function(e){
+
+                let product_id=$(this).attr('id');
+                let url=`/cart/add/${product_id}/`;
+
+
+                function getCookie(name) {
+
+                    let cookieValue = null;
+                    if (document.cookie && document.cookie !== '') {
+                        const cookies = document.cookie.split(';');
+                        for (let i = 0; i < cookies.length; i++) {
+                            const cookie = cookies[i].trim();
+                            // Does this cookie string begin with the name we want?
+                            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                break;
+                            }
+                        }
+                    }
+                    return cookieValue;
+
+                }
+
+                const csrftoken = getCookie('csrftoken');
+
+
+
+                try{
+
+
+                        $.ajax({
+
+                            method:"POST",
+                            url,
+                            data:{
+                                'csrfmiddlewaretoken':csrftoken
+                            },
+
+                            success:function(e){
+                                console.log(e)
+
+                                if(e.error){
+
+                                    if(e.loggin_required){
+
+                                        $.toast({ 
+                                                    text : "<p style='font-size:18px' class='text-center'>لطفا ابتدا وارد شوید</p>", 
+                                                    showHideTransition : 'slide',  // It can be plain, fade or slide
+                                                    bgColor : '#ff3647',              // Background color for toast
+                                                    textColor : '#000',            // text color
+                                                    allowToastClose : false,       // Show the close button or not
+                                                    hideAfter : 5000,              // `false` to make it sticky or time in miliseconds to hide after
+                                                    stack : 5,                     // `fakse` to show one stack at a time count showing the number of toasts that can be shown at once
+                                                    textAlign : 'right',            // Alignment of text i.e. left, right, center
+                                                    position : 'bottom-center'       // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values to position the toast on page
+                                        });
+
+                                        function re(){
+                                            window.location.href="/account/"
+                                        }
+
+                                        const redirect_handle=setTimeout(re,3000)
+
+                                    }   
+
+
+                                    if(e.many){
+
+                                        $.toast({ 
+                                                text : "<p style='font-size:18px' class='text-center'>دسترسی شما برای مدت محدود شده است لطفا بعدا امتحان کنید</p>", 
+                                                showHideTransition : 'slide',  // It can be plain, fade or slide
+                                                bgColor : '#ff3647',              // Background color for toast
+                                                textColor : '#000',            // text color
+                                                allowToastClose : false,       // Show the close button or not
+                                                hideAfter : 5000,              // `false` to make it sticky or time in miliseconds to hide after
+                                                stack : 5,                     // `fakse` to show one stack at a time count showing the number of toasts that can be shown at once
+                                                textAlign : 'right',            // Alignment of text i.e. left, right, center
+                                                position : 'bottom-center'       // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values to position the toast on page
+                                        });
+                                            
+
+
+                                        function reddirect_func(){
+                                            window.location.href="/"
+                                        }
+
+                                        const re=setTimeout(reddirect_func,5000)
+
+                                    }
+
+                                    
+                                    if(e.product){
+
+                                        $.toast({ 
+                                                text : "<p style='font-size:18px' class='text-center'>محصول وجود ندارد</p>", 
+                                                showHideTransition : 'slide',  // It can be plain, fade or slide
+                                                bgColor : '#ff3647',              // Background color for toast
+                                                textColor : '#000',            // text color
+                                                allowToastClose : false,       // Show the close button or not
+                                                hideAfter : 5000,              // `false` to make it sticky or time in miliseconds to hide after
+                                                stack : 5,                     // `fakse` to show one stack at a time count showing the number of toasts that can be shown at once
+                                                textAlign : 'right',            // Alignment of text i.e. left, right, center
+                                                position : 'bottom-center'       // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values to position the toast on page
+                                        });
+
+                                    }
+
+
+                                }
+
+
+                                if(e.added){
+
+                                    function reddirect_func(){
+                                            window.location.href="/cart/mycart/"
+                                        }
+
+                                    const re=setTimeout(reddirect_func,300)
+
+                                }
+
+
+
+                            },
+
+                            error:function(e){
+                                console.log("EEE",e)
+                            }
+
+
+                        })
+
+                        
+                }
+
+
+                catch (e){
+
+                    $.toast({ 
+                            text : "<p style='font-size:18px' class='text-center'>مشکلی وجوددارد دوباره امتحان کنید</p>", 
+                            showHideTransition : 'slide',  // It can be plain, fade or slide
+                            bgColor : '#ff3647',              // Background color for toast
+                            textColor : '#000',            // text color
+                            allowToastClose : false,       // Show the close button or not
+                            hideAfter : 5000,              // `false` to make it sticky or time in miliseconds to hide after
+                            stack : 5,                     // `fakse` to show one stack at a time count showing the number of toasts that can be shown at once
+                            textAlign : 'right',            // Alignment of text i.e. left, right, center
+                            position : 'bottom-center'       // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values to position the toast on page
+                    });
+
+                }
+
+
+                })
+
+        })
+
+    </script>
+
+{% if related %}
+	<div class="more-products mb-150">
+		<div class="container">
+			<div class="row">
+
+				<div class="col-lg-8 offset-lg-2 text-center">
+					<div class="section-title">	
+						<h3><span class="orange-text">محصولات</span> مشابه</h3>
+						<!-- <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, fuga quas itaque eveniet beatae optio.</p> -->
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+                {% for i in related %}
+                    <div class="col-lg-4 col-md-6 text-center">
+                        <div class="single-product-item">
+                            <div class="product-image">
+                                <a href="single-product.html">
+                                    <img src="{% if i.image %}{{i.image.url}}{% endif %}" alt="">
+                                </a>
+                            </div>
+                            <h3>Strawberry</h3>
+                            <p class="product-price"><span>هرکیلو</span> {{i.price|floatformat:"u"|intcomma:False}} تومان</p>
+                            
+                            {% if request.user.is_authenticated %}
+                                    {% test_in_cart i.id as in_cart %}
+                                    {% if in_cart %}
+                                        <a  class="cart-btn" style="background-color: green;" href="{% url 'mycart' %}">
+                                            <i class="fas fa-shopping-cart"></i>تسویه حساب</a>
+                                    {% else %}
+
+                                        <a id="{{i.id}}"  class="cart-btn cartAdd"><i class="fas fa-shopping-cart"></i>اضافه کردن به سبدخرید</a>
+
+
+                                    {% endif %}
+
+                                {% else %}
+                                    <a  id="{{i.id}}"  class="cart-btn cartAdd"><i class="fas fa-shopping-cart"></i>اضافه کردن به سبدخرید</a>
+
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+
+                <script type="text/javascript" >
+
+                    $(document).ready(function(){
+    
+                        $(".cartAdd").click(function(e){
+    
+                            let product_id=$(this).attr('id');
+                            console.log(this)
+                            console.log(product_id)
+                            let uuuu=`/cart/add/${product_id}/`;
+    
+    
+                            function getCookie(name) {
+    
+                                let cookieValue = null;
+                                if (document.cookie && document.cookie !== '') {
+                                    const cookies = document.cookie.split(';');
+                                    for (let i = 0; i < cookies.length; i++) {
+                                        const cookie = cookies[i].trim();
+                                        // Does this cookie string begin with the name we want?
+                                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                            break;
+                                        }
+                                    }
+                                }
+                                return cookieValue;
+    
+                            }
+    
+                            const csrftoken = getCookie('csrftoken');
+    
+    
+    
+                            try{
+    
+            
+                                    $.ajax({
+            
+                                        method:"POST",
+                                        url:uuuu,
+                                        data:{
+                                            'csrfmiddlewaretoken':csrftoken
+                                        },
+            
+                                        success:function(e){
+                                            console.log(e)
+            
+                                            if(e.error){
+            
+                                                if(e.loggin_required){
+            
+                                                    $.toast({ 
+                                                                text : "<p style='font-size:18px' class='text-center'>لطفا ابتدا وارد شوید</p>", 
+                                                                showHideTransition : 'slide',  // It can be plain, fade or slide
+                                                                bgColor : '#ff3647',              // Background color for toast
+                                                                textColor : '#000',            // text color
+                                                                allowToastClose : false,       // Show the close button or not
+                                                                hideAfter : 5000,              // `false` to make it sticky or time in miliseconds to hide after
+                                                                stack : 5,                     // `fakse` to show one stack at a time count showing the number of toasts that can be shown at once
+                                                                textAlign : 'right',            // Alignment of text i.e. left, right, center
+                                                                position : 'bottom-center'       // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values to position the toast on page
+                                                    });
+            
+                                                    function re(){
+                                                        window.location.href="/account/"
+                                                    }
+            
+                                                    const redirect_handle=setTimeout(re,3000)
+            
+                                                }   
+            
+            
+                                                if(e.many){
+            
+                                                    $.toast({ 
+                                                            text : "<p style='font-size:18px' class='text-center'>دسترسی شما برای مدت محدود شده است لطفا بعدا امتحان کنید</p>", 
+                                                            showHideTransition : 'slide',  // It can be plain, fade or slide
+                                                            bgColor : '#ff3647',              // Background color for toast
+                                                            textColor : '#000',            // text color
+                                                            allowToastClose : false,       // Show the close button or not
+                                                            hideAfter : 5000,              // `false` to make it sticky or time in miliseconds to hide after
+                                                            stack : 5,                     // `fakse` to show one stack at a time count showing the number of toasts that can be shown at once
+                                                            textAlign : 'right',            // Alignment of text i.e. left, right, center
+                                                            position : 'bottom-center'       // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values to position the toast on page
+                                                    });
+                                                        
+                
+                
+                                                    function reddirect_func(){
+                                                        window.location.href="/"
+                                                    }
+            
+                                                    const re=setTimeout(reddirect_func,5000)
+            
+                                                }
+            
+                                                
+                                                if(e.product){
+            
+                                                    $.toast({ 
+                                                            text : "<p style='font-size:18px' class='text-center'>محصول وجود ندارد</p>", 
+                                                            showHideTransition : 'slide',  // It can be plain, fade or slide
+                                                            bgColor : '#ff3647',              // Background color for toast
+                                                            textColor : '#000',            // text color
+                                                            allowToastClose : false,       // Show the close button or not
+                                                            hideAfter : 5000,              // `false` to make it sticky or time in miliseconds to hide after
+                                                            stack : 5,                     // `fakse` to show one stack at a time count showing the number of toasts that can be shown at once
+                                                            textAlign : 'right',            // Alignment of text i.e. left, right, center
+                                                            position : 'bottom-center'       // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values to position the toast on page
+                                                    });
+            
+                                                }
+            
+            
+                                            }
+            
+            
+                                            if(e.added){
+            
+                                                function reddirect_func(){
+                                                        window.location.href="/cart/mycart/"
+                                                    }
+            
+                                                const re=setTimeout(reddirect_func,300)
+            
+                                            }
+            
+            
+            
+                                        },
+            
+                                        error:function(e){
+                                            console.log("EEE",e)
+                                        }
+            
+            
+                                    })
+    
+                                    
+                            }
+    
+                            
+                            catch (e){
+    
+                                $.toast({ 
+                                        text : "<p style='font-size:18px' class='text-center'>مشکلی وجوددارد دوباره امتحان کنید</p>", 
+                                        showHideTransition : 'slide',  // It can be plain, fade or slide
+                                        bgColor : '#ff3647',              // Background color for toast
+                                        textColor : '#000',            // text color
+                                        allowToastClose : false,       // Show the close button or not
+                                        hideAfter : 5000,              // `false` to make it sticky or time in miliseconds to hide after
+                                        stack : 5,                     // `fakse` to show one stack at a time count showing the number of toasts that can be shown at once
+                                        textAlign : 'right',            // Alignment of text i.e. left, right, center
+                                        position : 'bottom-center'       // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values to position the toast on page
+                                });
+    
+                            }
+    
+    
+                        })
+                       
+    
+                    })
+    
+    
+               </script>
+		
+
+			</div>
+		</div>
+	</div>
+{% endif %}
+	
+	<div class="logo-carousel-section">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="logo-carousel-inner">
+						<div class="single-logo-item">
+							<img src="assets/img/company-logos/1.png" alt="">
+						</div>
+						<div class="single-logo-item">
+							<img src="assets/img/company-logos/2.png" alt="">
+						</div>
+						<div class="single-logo-item">
+							<img src="assets/img/company-logos/3.png" alt="">
+						</div>
+						<div class="single-logo-item">
+							<img src="assets/img/company-logos/4.png" alt="">
+						</div>
+						<div class="single-logo-item">
+							<img src="assets/img/company-logos/5.png" alt="">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock content %}
+
+
+
+{% block script %}
+
+{% endblock script %}

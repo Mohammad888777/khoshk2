@@ -1,0 +1,171 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% load humanize %}
+{% load base_core %}
+
+
+{% block title %}
+{% endblock title %}
+
+{% block head %}
+
+<script src="{% static 'jquery-3.7.1.min.js' %}" ></script>
+
+
+
+<script src=" https://cdn.jsdelivr.net/npm/jquery-toast-plugin@1.3.2/dist/jquery.toast.min.js "></script>
+<link href=" https://cdn.jsdelivr.net/npm/jquery-toast-plugin@1.3.2/dist/jquery.toast.min.css " rel="stylesheet">
+
+
+
+
+<link rel="stylesheet" href="{% static 'css/jquery.toast.css' %}">
+
+<style>
+    input[type='text'][name="copon"]{
+        text-align:right;
+    }
+</style>
+{% endblock head %}
+
+
+
+{% block content %}
+
+
+
+<div class="search-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <span class="close-btn"><i class="fas fa-window-close"></i></span>
+                <div class="search-bar">
+                    <div class="search-bar-tablecell">
+                        <h3>Search For:</h3>
+                        <input type="text" placeholder="Keywords">
+                        <button type="submit">Search <i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end search arewa -->
+
+<!-- breadcrumb-section -->
+<div class="breadcrumb-section breadcrumb-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2 text-center">
+                <div class="breadcrumb-text">
+                    <p>خشکبار مهرسام</p>
+                    <h1>سبدخرید</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="cart-section mt-150 mb-150">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-lg-8 col-md-12">
+                <div class="cart-table-wrap">
+                    <table class="cart-table">
+                        <thead class="cart-table-head">
+                            <tr class="table-head-row">
+                                <!-- <th class="product-remove"></th> -->
+                                <th class="product-total"></th>
+                                <th class="product-image">وزن</th>
+                                <th class="product-name">مجموع</th>
+                                <th class="product-name">قیمت(هرکیلو)</th>
+                                <th class="product-price">نام</th>
+                                <th class="product-quantity"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for i in items %}
+                                <tr class="table-body-row">
+                                    <!-- <td class="product-name"></td> -->
+                                    <td class="product-remove"><a href="#"><i class="far fa-window-close"></i></a></td>
+                                    <td class="product-quantity"><input type="number" placeholder="0" value="{{i.quantity}}"></td>
+                                    <td class="product-price">{{i.each_category_price|floatformat:"u"|intcomma:False}}</td>
+                                    <td class="product-price">{{i.product.price|floatformat:"u"|intcomma:False}}</td>
+                                    <td class="product-total">{{i.product.name}}</td>
+                                    <td class="product-image"><img src="{% if i.product.image %}{{i.product.image.url}}{% endif %}" alt=""></td>
+                                </tr>
+                            {% endfor %}
+
+                        </tbody>
+                    </table>
+
+                    <!-- <div class="coupon-section">
+                        <h3 class="text-right">کدتخفیف</h3>
+                        <div class="coupon-form-wrap">
+                            <form action="index.html">
+                                <p><input type="text" placeholder="abcd"></p>
+                                <p class="text-right"><input type="submit"  value="اعمال"></p>
+                            </form>
+                        </div>
+                    </div> -->
+
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="total-section">
+                    <table class="total-table">
+                        <thead class="total-table-head">
+                            <tr class="table-total-row">
+                                <th class="text-center">قیمت</th>
+                                <th style="float: right;">مجموع</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="total-data">
+                                <td class="text-center"> تومان  {{stat.total_without_tax|floatformat:"u"|intcomma:False}} </td>
+                                <td class="text-right"><strong>هزینه محصولات </strong></td>
+                            </tr>
+                            <tr class="total-data">
+                                <td class="text-center">0</td>
+                                <td class="text-right"><strong>هزینه ارسال </strong></td>
+                            </tr>
+                            <tr class="total-data">
+                                <td class="text-center">تومان  {{stat.total_without_tax|floatformat:"u"|intcomma:False}}</td>
+                                <td class="text-right"><strong>مجموع </strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="cart-buttons text-right">
+                        <!-- <a href="cart.html" class="boxed-btn">Update Cart</a> -->
+                        <a href="checkout.html" class="boxed-btn black ">پرداخت</a>
+                    </div>
+                </div>
+
+                <div class="coupon-section">
+                    <h3 class="text-right">کدتخفیف</h3>
+                    <div class="coupon-form-wrap">
+                        <form action="index.html">
+                            <p><input type="text" placeholder="کدتخفیف" name="copon"></p>
+                            <p class="text-right"><input type="submit" value="اعمال کد"></p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}
+
+
+
+
+
+{% block script %}
+
+
+{% endblock script %}
