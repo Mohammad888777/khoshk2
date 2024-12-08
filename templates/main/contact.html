@@ -1,0 +1,344 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+
+{% block head %}
+
+<script src="{% static 'jquery-3.7.1.min.js' %}" ></script>
+
+
+
+<script src=" https://cdn.jsdelivr.net/npm/jquery-toast-plugin@1.3.2/dist/jquery.toast.min.js "></script>
+<link href=" https://cdn.jsdelivr.net/npm/jquery-toast-plugin@1.3.2/dist/jquery.toast.min.css " rel="stylesheet">
+
+
+
+
+<link rel="stylesheet" href="{% static 'css/jquery.toast.css' %}">
+<style>
+    input{
+        text-align:right;
+    }
+
+    textarea{
+        text-align:right;
+
+    }
+
+
+</style>
+{% endblock head %}
+
+
+{% block content %}
+
+
+
+<div class="breadcrumb-section breadcrumb-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2 text-center">
+                <div class="breadcrumb-text">
+        
+                    <h1>ارتباط با ما </h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="contact-from-section mt-150 mb-150">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mb-5 mb-lg-0">
+                <div class="form-title">
+                    <h2>سوالی دارید از مجموعه، با ما درمیان بگذارید</h2>
+                </div>
+                 <div id="form_status"></div>
+                <div class="contact-form">
+
+                    <form type="POST" id="fruitkha-contact"  >
+                        {% csrf_token %}
+                        <p>
+                            <input type="text" placeholder="نام" name="name" id="name">
+
+                        </p>
+                        <p>
+                            <input type="text" placeholder="شماره همراه" name="phone" id="phone">
+
+                        </p>
+                        <p><textarea name="text" id="message" cols="30" rows="10" placeholder="پیغام شما"></textarea></p>
+
+                        <p class="text-right"><input type="submit" value="تایید"  ></p>
+                    </form>
+
+
+                    <script type="text/javascript" >
+
+                        $(document).ready(function(){
+
+                            $("#fruitkha-contact").submit(function(e){
+                                
+                                e.preventDefault();
+                                let form=new FormData(this);
+
+                                let url="/contact/"
+                                let name=$("input[type=text][name=name]");
+                                let phone=$("input[type=text][name=phone]");
+                                let text=$("#message")
+
+                                let sub_btn=$("input[type=submit]")
+
+                                if (!name.val()){
+
+                                    $.toast({ 
+                                                            text : "<p style='font-size:18px' class='text-center'>لطفا نام خودرا وارد نمایید</p>", 
+                                                            showHideTransition : 'slide',  // It can be plain, fade or slide
+                                                            bgColor : '#ff3647',              // Background color for toast
+                                                            textColor : '#000',            // text color
+                                                            allowToastClose : false,       // Show the close button or not
+                                                            hideAfter : 5000,              // `false` to make it sticky or time in miliseconds to hide after
+                                                            stack : 5,                     // `fakse` to show one stack at a time count showing the number of toasts that can be shown at once
+                                                            textAlign : 'right',            // Alignment of text i.e. left, right, center
+                                                            position : 'bottom-center'       // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values to position the toast on page
+                                    });
+
+                                }
+
+                                if(!phone.val()){
+
+                                    $.toast({ 
+                                                            text : "<p style='font-size:18px' class='text-center'>لطفا شماره همراه خودرا وارد نمایید</p>", 
+                                                            showHideTransition : 'slide',  // It can be plain, fade or slide
+                                                            bgColor : '#ff3647',              // Background color for toast
+                                                            textColor : '#000',            // text color
+                                                            allowToastClose : false,       // Show the close button or not
+                                                            hideAfter : 5000,              // `false` to make it sticky or time in miliseconds to hide after
+                                                            stack : 5,                     // `fakse` to show one stack at a time count showing the number of toasts that can be shown at once
+                                                            textAlign : 'right',            // Alignment of text i.e. left, right, center
+                                                            position : 'bottom-center'       // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values to position the toast on page
+                                    });
+
+                                }
+
+                                if(name.val() && phone.val()){
+
+                                    try{
+
+                                        $.ajax({
+
+                                            url,
+                                            data:form,
+                                            method:"POST",
+                                            contentType: false,
+                                            cache: false,
+                                            processData:false,
+
+                                            success:function(e){
+
+                                                console.log(e)
+                                                if(e.error){
+                                                    
+                                                    if(e.many){
+    
+    
+                                                        $.toast({ 
+                                                            text : "<p style='font-size:18px' class='text-center'>دسترسی شما برای مدت محدود شده است لطفا بعدا امتحان کنید</p>", 
+                                                            showHideTransition : 'slide',  // It can be plain, fade or slide
+                                                            bgColor : '#ff3647',              // Background color for toast
+                                                            textColor : '#000',            // text color
+                                                            allowToastClose : false,       // Show the close button or not
+                                                            hideAfter : 5000,              // `false` to make it sticky or time in miliseconds to hide after
+                                                            stack : 5,                     // `fakse` to show one stack at a time count showing the number of toasts that can be shown at once
+                                                            textAlign : 'right',            // Alignment of text i.e. left, right, center
+                                                            position : 'bottom-center'       // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values to position the toast on page
+                                                        });
+                                                        phone_input.val('')
+
+
+
+                                                        function reddirect_func(){
+                                                            window.location.href="/"
+                                                        }
+
+                                                        const re=setTimeout(reddirect_func,5000)
+
+
+                                                    }
+
+
+                                                    if(e.loggin_required){
+        
+                                                        $.toast({ 
+                                                                    text : "<p style='font-size:18px' class='text-center'>لطفا ابتدا وارد شوید</p>", 
+                                                                    showHideTransition : 'slide',  // It can be plain, fade or slide
+                                                                    bgColor : '#ff3647',              // Background color for toast
+                                                                    textColor : '#000',            // text color
+                                                                    allowToastClose : false,       // Show the close button or not
+                                                                    hideAfter : 5000,              // `false` to make it sticky or time in miliseconds to hide after
+                                                                    stack : 5,                     // `fakse` to show one stack at a time count showing the number of toasts that can be shown at once
+                                                                    textAlign : 'right',            // Alignment of text i.e. left, right, center
+                                                                    position : 'bottom-center'       // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values to position the toast on page
+                                                        });
+
+                                                        function re(){
+                                                            window.location.href="/account/"
+                                                        }
+
+                                                        const redirect_handle=setTimeout(re,3000)
+
+                                                    } 
+
+
+                                                    if(e.name){
+                                                        $.toast({ 
+                                                                                text : "<p style='font-size:18px' class='text-center'>لطفا نام خودرا وارد نمایید</p>", 
+                                                                                showHideTransition : 'slide',  // It can be plain, fade or slide
+                                                                                bgColor : '#ff3647',              // Background color for toast
+                                                                                textColor : '#000',            // text color
+                                                                                allowToastClose : false,       // Show the close button or not
+                                                                                hideAfter : 5000,              // `false` to make it sticky or time in miliseconds to hide after
+                                                                                stack : 5,                     // `fakse` to show one stack at a time count showing the number of toasts that can be shown at once
+                                                                                textAlign : 'right',            // Alignment of text i.e. left, right, center
+                                                                                position : 'bottom-center'       // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values to position the toast on page
+                                                        });
+
+                                                    }
+
+
+                                                    if(e.phone){
+                                                        $.toast({ 
+                                                                                text : "<p style='font-size:18px' class='text-center'>لطفا شماره همراه خودرا وارد نمایید</p>", 
+                                                                                showHideTransition : 'slide',  // It can be plain, fade or slide
+                                                                                bgColor : '#ff3647',              // Background color for toast
+                                                                                textColor : '#000',            // text color
+                                                                                allowToastClose : false,       // Show the close button or not
+                                                                                hideAfter : 5000,              // `false` to make it sticky or time in miliseconds to hide after
+                                                                                stack : 5,                     // `fakse` to show one stack at a time count showing the number of toasts that can be shown at once
+                                                                                textAlign : 'right',            // Alignment of text i.e. left, right, center
+                                                                                position : 'bottom-center'       // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values to position the toast on page
+                                                        });
+                                                    }
+
+
+
+                                                }
+
+
+                                                if(e.saved){
+
+                                                                $.toast({ 
+                                                                    text : "<p style='font-size:18px' class='text-center'>درخواست شما ثبت شد به زودی با شما تماس خواهیم گرفت</p>", 
+                                                                    showHideTransition : 'slide',  // It can be plain, fade or slide
+                                                                    bgColor : '#20c429',              // Background color for toast
+                                                                    textColor : '#000',            // text color
+                                                                    allowToastClose : false,       // Show the close button or not
+                                                                    hideAfter : 5000,              // `false` to make it sticky or time in miliseconds to hide after
+                                                                    stack : 5,                     // `fakse` to show one stack at a time count showing the number of toasts that can be shown at once
+                                                                    textAlign : 'right',            // Alignment of text i.e. left, right, center
+                                                                    position : 'bottom-center'       // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values to position the toast on page
+                                                                });
+
+                                                                sub_btn.attr("disabled","disabled")
+
+                                                }
+
+
+                                            },
+
+                                            error:function(e){
+
+                                                $.toast({ 
+                                                    text : "<p style='font-size:18px' class='text-center'>مشکلی وجود دارد دوباره امتحان کنید یا با پشتیبانی تماس بگیرید</p>", 
+                                                    showHideTransition : 'slide',  // It can be plain, fade or slide
+                                                    bgColor : '#ff3647',              // Background color for toast
+                                                    textColor : '#000',            // text color
+                                                    allowToastClose : false,       // Show the close button or not
+                                                    hideAfter : 5000,              // `false` to make it sticky or time in miliseconds to hide after
+                                                    stack : 5,                     // `fakse` to show one stack at a time count showing the number of toasts that can be shown at once
+                                                    textAlign : 'right',            // Alignment of text i.e. left, right, center
+                                                    position : 'bottom-center'       // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values to position the toast on page
+                                                });
+                            
+                            
+                                                function reddirect_func(){
+                                                                        window.location.href="/"
+                                                                    }
+                            
+                                                const re=setTimeout(reddirect_func,5000)
+
+                                            }   
+
+
+                                        })
+
+                                    }
+
+                                    catch{
+
+                                        $.toast({ 
+                                                    text : "<p style='font-size:18px' class='text-center'>مشکلی وجود دارد دوباره امتحان کنید یا با پشتیبانی تماس بگیرید</p>", 
+                                                    showHideTransition : 'slide',  // It can be plain, fade or slide
+                                                    bgColor : '#ff3647',              // Background color for toast
+                                                    textColor : '#000',            // text color
+                                                    allowToastClose : false,       // Show the close button or not
+                                                    hideAfter : 5000,              // `false` to make it sticky or time in miliseconds to hide after
+                                                    stack : 5,                     // `fakse` to show one stack at a time count showing the number of toasts that can be shown at once
+                                                    textAlign : 'right',            // Alignment of text i.e. left, right, center
+                                                    position : 'bottom-center'       // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values to position the toast on page
+                                                });
+                            
+                            
+                                                function reddirect_func(){
+                                                                        window.location.href="/"
+                                                                    }
+                            
+                                                const re=setTimeout(reddirect_func,5000)
+
+
+                                    }
+
+                                }
+
+
+                            })
+
+                        })
+
+                    </script>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="contact-form-wrap">
+                    <div class="contact-form-box">
+                        <h4><i class="fas fa-map"></i>آدرس ما</h4>
+                        <p>شیراز (به صورت سیار)</p>
+                    </div>
+                    <div class="contact-form-box">
+                        <h4><i class="far fa-clock"></i> ساعت کاری ما</h4>
+                        <p>از 8 الی 23</p>
+                    </div>
+                    <div class="contact-form-box">
+                        <h4><i class="fas fa-address-book"></i> راهای ارتباطی ما</h4>
+                        <p><a href="tel:09308880854" >09308880854</a> <br><a href="https://www.instagram.com/khoshkbar.khorshid"> اینستاگرام: khoshkbar.khorshid</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock content %}
+
+
+
+
+
+
+{% block script %}
+<script src="{% static 'js/jquery.toast.js' %}" ></script>
+
+{% endblock script %}

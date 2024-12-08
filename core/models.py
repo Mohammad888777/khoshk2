@@ -213,3 +213,54 @@ class Comment(models.Model):
         verbose_name="updated time",
         help_text="updated time"
     )
+
+
+
+
+
+
+class ContactUs(models.Model):
+
+
+    name=models.CharField(
+        max_length=150,
+        db_index=True,
+        blank=True,
+        null=True,
+        verbose_name="name",
+        help_text="name"
+    )
+
+    phone=models.CharField(
+        max_length=150,
+        db_index=True,
+        blank=True,
+        null=True,
+        verbose_name="phone",
+        help_text="phone"
+    )
+
+    text=models.TextField(
+        db_index=True,
+        blank=True,
+        null=True
+    )
+
+
+    
+
+    created=models.DateTimeField(
+        auto_now_add=True,
+        db_index=True,
+        verbose_name="created time",
+        help_text="created time"
+    )
+
+    updated=models.DateTimeField(
+        auto_now=True,
+        db_index=True,
+        db_column="updated",
+        name="updated",
+        verbose_name="updated time",
+        help_text="updated time"
+    )

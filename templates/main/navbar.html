@@ -20,13 +20,18 @@
                     <!-- menu start -->
                     <nav class="main-menu">
                         <ul>
-                            <li   ><a href="#">ارتباط باما</a>
+                            <li  
+
+                            {% if request.resolver_match.url_name == "contact" %} class="current-list-item" {% endif %}
+                             ><a href="{% url 'contact' %}">ارتباط باما</a>
                                 <!-- <ul class="sub-menu">
                                     <li><a href="index.html">Static Home</a></li>
                                     <li><a href="index_2.html">Slider Home</a></li>
                                 </ul> -->
                             </li>
-                            <li><a href="about.html">درباه ما</a></li>
+                            <li
+                            {% if request.resolver_match.url_name == "about" %} class="current-list-item" {% endif %}
+                            ><a href="{% url 'about' %}">درباه ما</a></li>
 
                             <!-- <li><a href="#">Pages</a> -->
                                 <!-- <ul class="sub-menu">
@@ -41,13 +46,12 @@
                             <!-- </li> -->
 
 
-                            <li><a href="news.html">محصولات ما</a>
-                                <!-- <ul class="sub-menu">
-                                    <li><a href="news.html">News</a></li>
-                                    <li><a href="single-news.html">Single News</a></li>
-                                </ul> -->
+                            <li
+                            {% if request.resolver_match.url_name == "shop" %} class="current-list-item" {% endif %}
+                            ><a href="{% url 'shop' %}">محصولات ما</a>
+                         
                             </li>
-                            <!-- <li><a href="contact.html">Contact</a></li> -->
+
                             <li 
                             {% if request.resolver_match.url_name == "home" %} class="current-list-item" {% endif %}>
                             <a href="{% url 'home' %}">خانه</a>
@@ -60,7 +64,7 @@
                             {% if request.resolver_match.url_name == "login" %} class="current-list-item" {% endif %} 
                                        >
                                        {% if request.user.is_authenticated %}
-                                            <a href=""> 
+                                            <a href="{% url 'myorders' %}"> 
                                                 سفارش های من
                                             </a>
                                         {% else %}
@@ -76,7 +80,11 @@
 
                             <li>
                                 <div class="header-icons">
-                                    <a class="shopping-cart" href="cart.html"><i class="fas fa-shopping-cart"></i></a>
+                                    <a class="shopping-cart" href="{% url 'mycart' %}">
+                                        
+                                        <i class="fas fa-shopping-cart"></i>
+                                        {{count}}
+                                    </a>
                                     <a class="mobile-hide search-bar-icon" href="#"><i class="fas fa-search"></i></a>
                                 </div>
                             </li>

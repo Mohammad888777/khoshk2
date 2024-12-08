@@ -106,3 +106,151 @@ class MyCartView(
         return render(request,"cart/myCart.html",context)
 
 
+
+
+
+
+
+
+class ChangeItemQuantity(
+    LoginRequired,
+    ControlThrottle,
+    View
+    ):
+
+    def post(self,request,*args,**kwargs):
+
+        with transaction.atomic():
+
+            data:dict=self.request.POST
+
+
+            if not "quantity" in data:
+
+                return JsonResponse({
+                    "error":True,
+                    "quantity":True
+                })
+
+            c_item=get_object_or_404(
+                CartItem,
+                id=self.kwargs.get("id"),
+                user=request.user
+            )
+
+            if int(data.get("quantity"))==0:
+
+                c_item.delete()
+                
+                return JsonResponse({
+                    "deleted":True
+                })
+            
+            else:
+
+                c_item.quantity=int(data.get('quantity'))
+
+            c_item.save()
+
+            return JsonResponse({
+                "response":c_item.quantity,
+            })
+    
+
+
+
+
+
+
+
+class IncreaseNumber(
+    LoginRequired,
+    ControlThrottle,
+    View
+    ):
+
+
+    def post(self,request,*args,**kwargs):
+
+        with transaction.atomic():
+
+            data:dict=self.request.POST
+
+            c=get_object_or_404(
+                    CartItem,
+                    id=self.kwargs.get("id"),
+                    user=request.user,
+                    cart_status="notPaid"
+                )   
+            c.quantity+=1
+            c.save()
+
+
+            return JsonResponse({
+                "saved":True
+            })
+    
+
+
+class DecreaseNumber(
+    LoginRequired,
+    ControlThrottle,
+    View
+):
+    
+
+    def post(self,request,*args,**kwargs):
+
+        with transaction.atomic():
+
+            c=get_object_or_404(
+                    CartItem,
+                    id=self.kwargs.get("id"),
+                    user=request.user,
+                    cart_status="notPaid"
+                )   
+            
+            if c.quantity>0:
+                if c.quantity==1:
+                    c.delete()
+
+                    return JsonResponse({
+                        "saved":True
+                    })
+
+                else:
+
+                    c.quantity-=1
+                    c.save()
+    
+            return JsonResponse({
+                "saved":True
+            })
+        
+
+class RemoveItem (LoginRequired,
+    ControlThrottle,
+    View
+):
+    
+
+    def post(self,request,*args,**kwargs):
+
+        with transaction.atomic():
+
+            c=get_object_or_404(
+                    CartItem,
+                    id=self.kwargs.get("id"),
+                    user=request.user,
+                    cart_status="notPaid"
+                )   
+            c.delete()
+    
+            return JsonResponse({
+                "deleted":True
+            })
+
+
+
+
+

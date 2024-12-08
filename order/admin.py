@@ -1,3 +1,11 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import Copon,Payment,Order
+
+
+
+admin.site.register([
+    Copon,
+    Payment,
+    Order
+])

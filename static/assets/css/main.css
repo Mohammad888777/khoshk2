@@ -1475,16 +1475,30 @@ input[type="submit"] {
 }
 
 .homepage-bg-1 {
-  background-image: url(../img/hero-bg.jpg);
+  background-image: url(../../img/almond.jpg);
 }
 
 .homepage-bg-2 {
-  background-image: url(../img/hero-bg-2.jpg);
+  background-image: url(../../img/508747f545274fd4a6e01ffef468f7f4.jpeg);
 }
 
 .homepage-bg-3 {
-  background-image: url(../img/hero-bg-3.jpg);
+  background-image: url(../../img/60d8345b5f8d0.jpeg);
 }
+
+.homepage-bg-4{
+  background-image: url(../../img/pYvgMDkaN09iPqOPyuGPpmCLmsOcD8DjsSVferhD.jpeg);
+
+}
+
+.homepage-bg-4{
+  background-image: url(../../img/pYvgMDkaN09iPqOPyuGPpmCLmsOcD8DjsSVferhD.jpeg);
+}
+
+.homepage-bg-5{
+  background-image: url(../../img/app-1673792454391-1000805747-ghw3mAAe6OZUj6Qg6nKQGK73Z7rsA2uLwVZZVpfq6ESugeSN5FA7MgVlquhKEWvjN-700x525.jpeg);
+}
+
 
 .homepage-slider {
   height: 100%;
@@ -2165,7 +2179,7 @@ a.video-play-btn {
 }
 
 .feature-bg:after {
-  background-image: url(../img/feature-bg.jpg);
+  background-image: url(../../kh.jpg);
   position: absolute;
   right: 0;
   top: 0;
@@ -2683,7 +2697,7 @@ tr.total-data td strong {
   margin: 0;
 }
 
-.card.single-accordion .card-header h5 button:before {
+/* .card.single-accordion .card-header h5 button:before {
   position: absolute;
   left: 20px;
   top: 50%;
@@ -2693,7 +2707,7 @@ tr.total-data td strong {
   line-height: 22px;
   margin-top: -11px;
   color: #F28123;
-}
+} */
 
 .billing-address-form form p:last-child {
   margin-bottom: 0;

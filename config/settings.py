@@ -11,7 +11,9 @@ SECRET_KEY = 'django-insecure-o*76t9ob(w+(f@$_-kc!6eh248m$*de71i3wr%tccfe2s3jpc)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "*"
+]
 
 
 # Application definition
@@ -55,6 +57,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'card.context_processor.item_count',
             ],
         },
     },
@@ -70,6 +73,12 @@ DATABASES = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
+
+
+    # 'default': {
+    
+    #     'ENGINE':"django.db.backends.postgresql",
+    # }
 }
 
 

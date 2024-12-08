@@ -1,0 +1,308 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% load humanize %}
+{% load base_core %}
+
+
+{% block title %}
+{% endblock title %}
+
+{% block head %}
+
+<script src="{% static 'jquery-3.7.1.min.js' %}" ></script>
+
+
+
+<script src=" https://cdn.jsdelivr.net/npm/jquery-toast-plugin@1.3.2/dist/jquery.toast.min.js "></script>
+<link href=" https://cdn.jsdelivr.net/npm/jquery-toast-plugin@1.3.2/dist/jquery.toast.min.css " rel="stylesheet">
+
+
+
+
+<link rel="stylesheet" href="{% static 'css/jquery.toast.css' %}">
+{% endblock head %}
+
+
+
+{% block content %}
+<div class="search-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <span class="close-btn"><i class="fas fa-window-close"></i></span>
+                <div class="search-bar">
+                    <div class="search-bar-tablecell">
+                        <h3>Search For:</h3>
+                        <input type="text" placeholder="Keywords">
+                        <button type="submit">Search <i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="breadcrumb-section breadcrumb-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2 text-center">
+                <div class="breadcrumb-text">
+                  
+                    <h1>محصولات ما</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="product-section mt-150 mb-150">
+    <div class="container">
+
+        <!-- <div class="row">
+            <div class="col-md-12">
+                <div class="product-filters">
+                    <ul>
+                        <li class="active" data-filter="*">All</li>
+                        <li data-filter=".strawberry">Strawberry</li>
+                        <li data-filter=".berry">Berry</li>
+                        <li data-filter=".lemon">Lemon</li>
+                    </ul>
+                </div>
+            </div>
+        </div> -->
+
+        <div class="row product-lists">
+        {% for i in products %}
+
+        <div class="col-lg-4 col-md-6 text-center">
+            <div class="single-product-item">
+                <div class="product-image">
+                    <a href="{% url 'detail' i.id %}">
+                        {% if i.image %}
+                            <img src="{{i.image.url}}" alt="">
+                        {% endif %}
+                    </a>
+                </div>
+                <h3>{{i.title}}</h3>
+                <p class="product-price"><span>قیمت هر کیلو(تومان)</span> {{i.price|floatformat:"u"|intcomma:False}}  </p>
+                {% if request.user.is_authenticated %}
+                    {% test_in_cart i.id as in_cart %}
+                    {% if in_cart %}
+                        <a  class="cart-btn" style="background-color: green;" href="{% url 'mycart' %}">
+                            <i class="fas fa-shopping-cart"></i>تسویه حساب</a>
+                    {% else %}
+
+                        <a id="{{i.id}}"  class="cart-btn addCart"><i class="fas fa-shopping-cart"></i>اضافه کردن به سبدخرید</a>
+
+
+                    {% endif %}
+
+                {% else %}
+                    <a  id="{{i.id}}"  class="cart-btn addCart"><i class="fas fa-shopping-cart"></i>اضافه کردن به سبدخرید</a>
+
+                {% endif %}
+            </div>
+        </div>
+
+
+        {% endfor %}
+
+
+        </div>
+
+
+        <!-- <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="pagination-wrap">
+                    <ul>
+                        <li><a href="#">Prev</a></li>
+                        <li><a href="#">1</a></li>
+                        <li><a class="active" href="#">2</a></li>
+                        <li><a href="#">3</a></li>
+                        <li><a href="#">Next</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div> -->
+
+
+
+    </div>
+</div>
+<script type="text/javascript" >
+
+    $(document).ready(function(){
+
+        $(".addCart").click(function(e){
+
+            let product_id=$(this).attr('id');
+            let url=`/cart/add/${product_id}/`;
+
+
+            function getCookie(name) {
+
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    const cookies = document.cookie.split(';');
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i].trim();
+                        // Does this cookie string begin with the name we want?
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+
+            }
+
+            const csrftoken = getCookie('csrftoken');
+
+
+
+            try{
+
+
+                    $.ajax({
+
+                        method:"POST",
+                        url,
+                        data:{
+                            'csrfmiddlewaretoken':csrftoken
+                        },
+
+                        success:function(e){
+                            console.log(e)
+
+                            if(e.error){
+
+                                if(e.loggin_required){
+
+                                    $.toast({ 
+                                                text : "<p style='font-size:18px' class='text-center'>لطفا ابتدا وارد شوید</p>", 
+                                                showHideTransition : 'slide',  // It can be plain, fade or slide
+                                                bgColor : '#ff3647',              // Background color for toast
+                                                textColor : '#000',            // text color
+                                                allowToastClose : false,       // Show the close button or not
+                                                hideAfter : 5000,              // `false` to make it sticky or time in miliseconds to hide after
+                                                stack : 5,                     // `fakse` to show one stack at a time count showing the number of toasts that can be shown at once
+                                                textAlign : 'right',            // Alignment of text i.e. left, right, center
+                                                position : 'bottom-center'       // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values to position the toast on page
+                                    });
+
+                                    function re(){
+                                        window.location.href="/account/"
+                                    }
+
+                                    const redirect_handle=setTimeout(re,3000)
+
+                                }   
+
+
+                                if(e.many){
+
+                                    $.toast({ 
+                                            text : "<p style='font-size:18px' class='text-center'>دسترسی شما برای مدت محدود شده است لطفا بعدا امتحان کنید</p>", 
+                                            showHideTransition : 'slide',  // It can be plain, fade or slide
+                                            bgColor : '#ff3647',              // Background color for toast
+                                            textColor : '#000',            // text color
+                                            allowToastClose : false,       // Show the close button or not
+                                            hideAfter : 5000,              // `false` to make it sticky or time in miliseconds to hide after
+                                            stack : 5,                     // `fakse` to show one stack at a time count showing the number of toasts that can be shown at once
+                                            textAlign : 'right',            // Alignment of text i.e. left, right, center
+                                            position : 'bottom-center'       // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values to position the toast on page
+                                    });
+                                        
+
+
+                                    function reddirect_func(){
+                                        window.location.href="/"
+                                    }
+
+                                    const re=setTimeout(reddirect_func,5000)
+
+                                }
+
+                                
+                                if(e.product){
+
+                                    $.toast({ 
+                                            text : "<p style='font-size:18px' class='text-center'>محصول وجود ندارد</p>", 
+                                            showHideTransition : 'slide',  // It can be plain, fade or slide
+                                            bgColor : '#ff3647',              // Background color for toast
+                                            textColor : '#000',            // text color
+                                            allowToastClose : false,       // Show the close button or not
+                                            hideAfter : 5000,              // `false` to make it sticky or time in miliseconds to hide after
+                                            stack : 5,                     // `fakse` to show one stack at a time count showing the number of toasts that can be shown at once
+                                            textAlign : 'right',            // Alignment of text i.e. left, right, center
+                                            position : 'bottom-center'       // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values to position the toast on page
+                                    });
+
+                                }
+
+
+                            }
+
+
+                            if(e.added){
+
+                                function reddirect_func(){
+                                        window.location.href="/cart/mycart/"
+                                    }
+
+                                const re=setTimeout(reddirect_func,300)
+
+                            }
+
+
+
+                        },
+
+                        error:function(e){
+                            console.log("EEE",e)
+                        }
+
+
+                    })
+
+                    
+            }
+
+            
+            catch (e){
+
+                $.toast({ 
+                        text : "<p style='font-size:18px' class='text-center'>مشکلی وجوددارد دوباره امتحان کنید</p>", 
+                        showHideTransition : 'slide',  // It can be plain, fade or slide
+                        bgColor : '#ff3647',              // Background color for toast
+                        textColor : '#000',            // text color
+                        allowToastClose : false,       // Show the close button or not
+                        hideAfter : 5000,              // `false` to make it sticky or time in miliseconds to hide after
+                        stack : 5,                     // `fakse` to show one stack at a time count showing the number of toasts that can be shown at once
+                        textAlign : 'right',            // Alignment of text i.e. left, right, center
+                        position : 'bottom-center'       // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values to position the toast on page
+                });
+
+            }
+
+
+        })
+       
+
+    })
+
+
+</script>
+{% endblock content %}
+
+
+
+
+{% block script %}
+<script src="{% static 'js/jquery.toast.js' %}" ></script>
+
+
+{% endblock script %}

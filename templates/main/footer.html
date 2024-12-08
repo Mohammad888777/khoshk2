@@ -4,7 +4,9 @@
             <div class="col-lg-3 col-md-6">
                 <div class="footer-box about-widget">
                     <h2 class="widget-title">درباره ما</h2>
-                    <p>Ut enim ad minim veniam perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae.</p>
+                    <p class="text-center">
+                        تلاش ما در خشکبار خورشید ارائه باکیفیت‌ترین محصولات خشکبار با بهترین قیمت همراه با ضمانت بازگشت می باشد
+                    </p>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6">
@@ -12,12 +14,15 @@
                     <h2 class="widget-title">راه های ارتباطی ما</h2>
                     <ul>
                         <li>
-                            <a href="">
-                                khoshkbar.mehrsam     اینستاگرام ما 
+                            <a href="https://www.instagram.com/khoshkbar.khorshid">
+                                khoshkbar.khorshid     اینستاگرام ما 
                             </a>
                         </li>
-                        <li>@fruitkha.com</li>
-                        <li>+989308880854</li>
+                        <li>واتس اپ 09308880854</li>
+                        <li> <span><a href="https://telegram.org/">khoshkbar_khorshid</a> </span>  تلگرام</li>
+                        <li>
+                            <a style="text-decoration: none;" href="tel:09308880854">09308880854</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -25,10 +30,10 @@
                 <div class="footer-box pages">
                     <h2 class="widget-title">صحفه ها</h2>
                     <ul>
-                        <li><a href="index.html">خانه</a></li>
-                        <li><a href="news.html">محصولات</a></li>
-                        <li><a href="about.html">درباره ما</a></li>
-                        <li><a href="services.html">تماس با ما</a></li>
+                        <li><a href="{% url 'home' %}">خانه</a></li>
+                        <li><a href="{% url 'shop' %}">محصولات</a></li>
+                        <li><a href="{% url 'about' %}">درباره ما</a></li>
+                        <li><a href="{% url 'contact' %}">تماس با ما</a></li>
                     </ul>
                 </div>
             </div>
@@ -57,9 +62,10 @@
             <div class="col-lg-6 text-right col-md-12">
                 <div class="social-icons">
                     <ul>
-                        <li><a href="#" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
+                        <!-- <li><a href="#" target="_blank"><i class="fab fa-facebook-f"></i></a></li> -->
                         <li><a href="#" target="_blank"><i class="fab fa-telegram"></i></a></li>
-                        <li><a href="https://www.instagram.com/khoshkbar.mehrsam" target="_blank"><i class="fab fa-instagram"></i></a></li>
+                        <li><a href="#" target="_blank"><i class="fab fa-whatsapp"></i></a></li>
+                        <li><a href="https://www.instagram.com/khoshkbar.khorshid" target="_blank"><i class="fab fa-instagram"></i></a></li>
    
                     </ul>
                 </div>

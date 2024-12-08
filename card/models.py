@@ -91,7 +91,6 @@ class CartItem(models.Model):
         on_delete=models.CASCADE,
         null=True,
         blank=True
-
     )
 
     cart=models.ForeignKey(

@@ -1,0 +1,133 @@
+
+{% load static %}
+{% load humanize %}
+<html>
+    <head>
+
+            <link rel="stylesheet" href="{% static 'panel/css/style.css' %}">
+            <link rel="stylesheet" href="{% static 'panel/css/responsive_991.css' %}" media="(max-width:991px)'">
+            <link rel="stylesheet" href="{% static 'panel/css/responsive_768.css' %}" media="(max-width:768px)'">
+            <link rel="stylesheet" href="{% static 'panel/css/font.css' %}">
+
+        
+    </head>
+
+    <style>
+        .return-link:hover{
+            background-color: rgb(30, 30, 66);
+            color: white;
+            padding: 2px;
+        }
+    </style>
+
+
+<body>
+    
+<br>
+<br>
+<br>
+
+    <div class="container">
+        <div class="container">
+            <h1 class="text-center" >
+                سفارش های اخیر شما
+            </h1>
+            <br>
+            <br>
+            <h1 class="text-center" >
+                <a class="return-link" style="border-bottom: 2px solid blue;" href="{% url 'home' %}">
+                    بازگشت
+                </a>
+            </h1>
+        </div>
+    </div>
+    <br>
+    <br>
+
+<div class="main-content">
+    <div class="tab__box">
+        <div class="tab__items">
+            <p style="font-size: 18px;" class="tab__item is-active" > کاربر {{user.phone}} </p>
+        </div>
+    </div>
+    <div class="table__box">
+        <table class="table">
+
+            <thead role="rowgroup">
+            <tr role="row" class="title-row">
+                <th>شناسه</th>
+                <th>وضعیت</th>
+                <th>مبلغ پرداخت</th>
+                <th>لینک پرداخت</th>
+                <th>کدتخفیف دارد</th>
+                <th>شهر</th>
+                <th>وضعیت ارسال</th>
+                <th>تاریخ ایجاد</th>
+                <!-- <th>عملیات</th> -->
+            
+          
+            </tr>
+            </thead>
+            <tbody>
+                {% for i in orders %}
+                    <tr role="row" class="">
+                        <td><a href="">{{i.custom_order_id}}</a></td>
+                        <td><a href="">
+                            {% if i.order_status == "PAID" %}
+                                پرداخت شده
+                            {% else %}
+                                <span style="background-color: red;color:white;padding: 2px;" >
+                                    پرداخت نشده
+                                </span>
+                            {% endif %}
+                        </a></td>
+                        <td><a href="">{{i.final_amount|floatformat:"u"|intcomma:False}}</a></td>
+                        <td>
+                            {% if i.order_status != "PAID" %}
+                                <a href="https://sandbox.zarinpal.com/pg/StartPay/{{i.authority}}" style="color: blue;">پرداخت</a>
+                            {% else %}
+                                پرداخت شده
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if i.used_copon %}
+                                دارد
+                            {% else %}
+                                ندارد
+                            {% endif %}
+                        </td>
+                        <td>
+                            {{i.city}}
+                        </td>
+                        <td>
+                            {{i.send_status}}
+                        </td>
+
+                        <td>
+                            {{i.created_irani|date:'Y-m-d'}}
+                            <br>
+                            {{i.created_irani|date:'H:m'}}
+
+                        </td>
+                     
+                        <!-- <td>
+                            <a href="" class="item-delete mlg-15" title="حذف"></a>
+                            <a href="" class="item-reject mlg-15" title="رد"></a>
+                            <a href="" target="_blank" class="item-eye mlg-15" title="مشاهده"></a>
+                            <a href="" class="item-confirm mlg-15" title="تایید"></a>
+                            <a href="" class="item-edit" title="ویرایش"></a>
+                        </td> -->
+                    </tr>
+                {% endfor %}
+    
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+
+<script src="{% static 'panel/js/jquery-3.4.1.min.js' %}"></script>
+<script src="{% static 'panel/js/js.js' %}"></script>
+
+</html>
